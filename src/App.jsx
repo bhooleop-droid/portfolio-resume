@@ -21,7 +21,6 @@ const App = () => {
         }
     }, [])
 
-    console.log('Rendering App component...');
     return (
         <div className="relative min-h-screen bg-background text-white selection:bg-accent/30 selection:text-accent">
             <CustomCursor />
