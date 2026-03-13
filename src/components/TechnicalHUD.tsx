@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TechnicalDetail } from "../data/techData";
+import type { TechnicalDetail } from "../data/techData";
 
 interface TechnicalHUDProps {
   data: TechnicalDetail | null;
