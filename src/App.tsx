@@ -8,6 +8,10 @@ import TechnicalHUD from './components/TechnicalHUD'
 import CustomCursor from './components/CustomCursor'
 import { techDetails } from './data/techData'
 import type { TechnicalDetail } from './data/techData'
+import Intro from './components/Intro'
+
+// Use the exact path to your provided video
+const INTRO_VIDEO = "/vid/grok-video-987825c2-5cbc-41ac-b268-fcc7213e6110.mp4";
 
 const StarField: React.FC = () => {
   const [stars, setStars] = useState<{ id: number; left: string; top: string; delay: string; duration: string; size: string }[]>([]);
@@ -46,6 +50,7 @@ const StarField: React.FC = () => {
 };
 
 function App() {
+  const [showIntro, setShowIntro] = useState(true);
   const [selectedTech, setSelectedTech] = useState<TechnicalDetail | null>(null);
 
   const handleSelectTech = (slug: string) => {
@@ -54,6 +59,10 @@ function App() {
       setSelectedTech(detail);
     }
   };
+
+  if (showIntro) {
+    return <Intro videoSrc={INTRO_VIDEO} onIntroEnd={() => setShowIntro(false)} />;
+  }
 
   return (
     <div className="min-h-screen">
