@@ -21,9 +21,27 @@ const TechIcon = ({ slug, angle, distance, onSelect }: { slug: string; angle: nu
     if (meshRef.current) {
       const time = state.clock.getElapsedTime() * 0.4;
       const currentAngle = angle + time;
-      meshRef.current.position.x = Math.cos(currentAngle) * distance;
-      meshRef.current.position.z = Math.sin(currentAngle) * distance;
-      meshRef.current.position.y = Math.sin(time * 0.8 + angle) * 0.5;
+      
+      const targetPos = new THREE.Vector3(
+        Math.cos(currentAngle) * distance,
+        Math.sin(time * 0.8 + angle) * 0.5,
+        Math.sin(currentAngle) * distance
+      );
+
+      // Gravity Displacement Logic
+      const mouseX = (window as any).mouseX || 0;
+      const mouseY = (window as any).mouseY || 0;
+      
+      // Project mouse to 3D roughly
+      const mouse3D = new THREE.Vector3(mouseX * 5, mouseY * 5, 0);
+      const distToMouse = targetPos.distanceTo(mouse3D);
+      
+      if (distToMouse < 4) {
+        const pullStrength = (1 - distToMouse / 4) * 1.2;
+        targetPos.lerp(mouse3D, pullStrength);
+      }
+
+      meshRef.current.position.lerp(targetPos, 0.1);
       
       // Scaling on hover
       const targetScale = hovered ? 1.4 : 1;

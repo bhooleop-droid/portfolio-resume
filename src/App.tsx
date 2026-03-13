@@ -5,6 +5,7 @@ import Skills from './sections/Skills'
 import Projects from './sections/Projects'
 import Contact from './sections/Contact'
 import TechnicalHUD from './components/TechnicalHUD'
+import CustomCursor from './components/CustomCursor'
 import { techDetails } from './data/techData'
 import type { TechnicalDetail } from './data/techData'
 
@@ -56,6 +57,7 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      <CustomCursor />
       <StarField />
       <Navbar />
       

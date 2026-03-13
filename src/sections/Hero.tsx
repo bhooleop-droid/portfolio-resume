@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import AryanModel from "../components/AryanModel";
+import Magnetic from "../components/Magnetic";
 
 const Hero: React.FC<{ onSelectTech?: (slug: string) => void }> = ({ onSelectTech }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -94,21 +95,24 @@ const Hero: React.FC<{ onSelectTech?: (slug: string) => void }> = ({ onSelectTec
                 transform: `translateY(${frameIndex > 10 ? 0 : 20}px)`
               }}
             >
-              <span className="glass-purple px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest text-cosmic-violet uppercase">
-                Fullstack Developer Portfolio
-              </span>
+              <div className="space-y-4">
+                <Magnetic strength={0.2}>
+                  <div className="text-cosmic-violet font-mono text-sm tracking-[0.3em] uppercase opacity-80 mb-2">
+                    System.initialize("Developer Profile")
+                  </div>
+                </Magnetic>
+                <Magnetic strength={0.4}>
+                  <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tighter">
+                    MEET <span className="text-transparent bg-clip-text bg-gradient-to-r from-cosmic-purple to-cosmic-violet">ARYAN</span>
+                  </h1>
+                </Magnetic>
+                <Magnetic strength={0.3}>
+                  <h2 className="text-2xl md:text-4xl font-light text-white/60 tracking-tight">
+                    Full Stack Architect & 3D Visualist
+                  </h2>
+                </Magnetic>
+              </div>
             </div>
-
-            {/* Stage 2: Title */}
-            <h1 
-              className="text-5xl md:text-7xl font-bold mb-6 transition-all duration-1000 transform"
-              style={{ 
-                opacity: frameIndex > 30 && frameIndex < 140 ? 1 : 0,
-                transform: `translateY(${frameIndex > 30 ? 0 : 40}px)`
-              }}
-            >
-              Providing <span className="text-cosmic-violet text-glow">the best</span> project experience.
-            </h1>
 
             {/* Stage 3: Description */}
             <div 
