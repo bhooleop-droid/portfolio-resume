@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import AryanModel from "../components/AryanModel";
 
-const Hero: React.FC = () => {
+const Hero: React.FC<{ onSelectTech?: (slug: string) => void }> = ({ onSelectTech }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [frameIndex, setFrameIndex] = useState(1);
   const totalFrames = 145;
@@ -123,7 +123,7 @@ const Hero: React.FC = () => {
                 interactive, and user-centric web applications.
               </div>
               <div className="w-full h-64 md:h-96 pointer-events-auto">
-                <AryanModel className="w-full h-full" />
+                <AryanModel className="w-full h-full" onSelect={onSelectTech} />
               </div>
             </div>
 

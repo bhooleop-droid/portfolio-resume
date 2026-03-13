@@ -4,6 +4,9 @@ import Hero from './sections/Hero'
 import Skills from './sections/Skills'
 import Projects from './sections/Projects'
 import Contact from './sections/Contact'
+import TechnicalHUD from './components/TechnicalHUD'
+import { techDetails } from './data/techData'
+import type { TechnicalDetail } from './data/techData'
 
 const StarField: React.FC = () => {
   const [stars, setStars] = useState<{ id: number; left: string; top: string; delay: string; duration: string; size: string }[]>([]);
@@ -42,21 +45,35 @@ const StarField: React.FC = () => {
 };
 
 function App() {
+  const [selectedTech, setSelectedTech] = useState<TechnicalDetail | null>(null);
+
+  const handleSelectTech = (slug: string) => {
+    const detail = techDetails[slug];
+    if (detail) {
+      setSelectedTech(detail);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <StarField />
       <Navbar />
       
       <main>
-        <Hero />
+        <Hero onSelectTech={handleSelectTech} />
         
         {/* Spacer for smooth transition from Hero Canvas */}
         <div className="h-24 bg-gradient-to-b from-transparent to-deep-space"></div>
         
-        <Skills />
+        <Skills onSelectTech={handleSelectTech} />
         <Projects />
-      <Contact />
+        <Contact />
       </main>
+
+      <TechnicalHUD 
+        data={selectedTech} 
+        onClose={() => setSelectedTech(null)} 
+      />
     </div>
   )
 }

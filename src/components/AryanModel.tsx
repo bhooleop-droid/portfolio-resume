@@ -3,8 +3,9 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { PerspectiveCamera, Float, ContactShadows, Sphere, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
-const TechIcon = ({ slug, angle, distance }: { slug: string; angle: number; distance: number }) => {
+const TechIcon = ({ slug, angle, distance, onSelect }: { slug: string; angle: number; distance: number; onSelect: (slug: string) => void }) => {
   const meshRef = useRef<THREE.Group>(null);
+  const [hovered, setHovered] = React.useState(false);
   const purple = "8b5cf6";
   
   const texture = useMemo(() => {
@@ -23,6 +24,13 @@ const TechIcon = ({ slug, angle, distance }: { slug: string; angle: number; dist
       meshRef.current.position.x = Math.cos(currentAngle) * distance;
       meshRef.current.position.z = Math.sin(currentAngle) * distance;
       meshRef.current.position.y = Math.sin(time * 0.8 + angle) * 0.5;
+      
+      // Scaling on hover
+      const targetScale = hovered ? 1.4 : 1;
+      meshRef.current.scale.x = THREE.MathUtils.lerp(meshRef.current.scale.x, targetScale, 0.1);
+      meshRef.current.scale.y = THREE.MathUtils.lerp(meshRef.current.scale.y, targetScale, 0.1);
+      meshRef.current.scale.z = THREE.MathUtils.lerp(meshRef.current.scale.z, targetScale, 0.1);
+
       meshRef.current.lookAt(state.camera.position);
     }
   });
@@ -30,14 +38,22 @@ const TechIcon = ({ slug, angle, distance }: { slug: string; angle: number; dist
   if (!texture) return null;
 
   return (
-    <group ref={meshRef}>
+    <group 
+      ref={meshRef} 
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect(slug);
+      }}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    >
       <mesh>
         <planeGeometry args={[0.7, 0.7]} />
         <meshBasicMaterial map={texture} transparent={true} side={THREE.DoubleSide} />
       </mesh>
       <mesh position={[0, 0, -0.01]}>
         <planeGeometry args={[0.9, 0.9]} />
-        <meshBasicMaterial color="#8b5cf6" transparent opacity={0.15} />
+        <meshBasicMaterial color={hovered ? "#a78bfa" : "#8b5cf6"} transparent opacity={hovered ? 0.4 : 0.15} />
       </mesh>
     </group>
   );
@@ -115,7 +131,7 @@ const CyberLines = ({ count = 20 }: { count?: number }) => {
   );
 };
 
-const Scene = () => {
+const Scene = ({ onSelect }: { onSelect: (slug: string) => void }) => {
   const techs = [
     { slug: "react" },
     { slug: "javascript" },
@@ -139,20 +155,21 @@ const Scene = () => {
           slug={tech.slug} 
           angle={(i / techs.length) * Math.PI * 2} 
           distance={3.5} 
+          onSelect={onSelect}
         />
       ))}
     </group>
   );
 };
 
-const AryanModel: React.FC<{ className?: string }> = ({ className }) => {
+const AryanModel: React.FC<{ className?: string; onSelect?: (slug: string) => void }> = ({ className, onSelect }) => {
   return (
-    <div className={className}>
+    <div className={`${className} cursor-pointer`}>
       <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 40 }}>
         <ambientLight intensity={0.4} />
         <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={40} />
         <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-          <Scene />
+          <Scene onSelect={onSelect || (() => {})} />
         </Float>
         <ContactShadows position={[0, -3.5, 0]} opacity={0.4} scale={15} blur={3} far={4} color="#6d28d9" />
       </Canvas>

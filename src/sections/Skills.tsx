@@ -31,7 +31,7 @@ const skillCategories = [
   },
 ];
 
-const Skills: React.FC = () => {
+const Skills: React.FC<{ onSelectTech?: (slug: string) => void }> = ({ onSelectTech }) => {
   const purple = "8b5cf6";
 
   return (
@@ -46,7 +46,7 @@ const Skills: React.FC = () => {
           </p>
         </div>
         <div className="w-full h-64 md:h-96 pointer-events-auto">
-          <AryanModel className="w-full h-full" />
+          <AryanModel className="w-full h-full" onSelect={onSelectTech} />
         </div>
       </div>
       
@@ -60,7 +60,8 @@ const Skills: React.FC = () => {
               {category.skills.map((skill) => (
                 <div 
                   key={skill.name} 
-                  className="flex flex-col items-center gap-2 group cursor-default"
+                  className="flex flex-col items-center gap-2 group cursor-pointer"
+                  onClick={() => onSelectTech?.(skill.slug)}
                 >
                   <div className="w-14 h-14 glass flex items-center justify-center p-3 rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:border-cosmic-purple/50">
                     <img 
