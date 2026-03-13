@@ -9,6 +9,7 @@ import CustomCursor from './components/CustomCursor'
 import { techDetails } from './data/techData'
 import type { TechnicalDetail } from './data/techData'
 import Intro from './components/Intro'
+import SystemTerminal from './components/SystemTerminal'
 
 // Use the exact path to your provided video
 const INTRO_VIDEO = "/vid/grok-video-987825c2-5cbc-41ac-b268-fcc7213e6110.mp4";
@@ -85,6 +86,7 @@ function App() {
         data={selectedTech} 
         onClose={() => setSelectedTech(null)} 
       />
+      <SystemTerminal />
     </div>
   )
 }
