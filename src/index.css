@@ -1,48 +1,103 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  color-scheme: dark;
+@theme {
+  --color-deep-space: #050510;
+  --color-cosmic-purple: #6d28d9;
+  --color-cosmic-violet: #8b5cf6;
+  --color-neon-purple: #bfdbfe;
+  --color-accent-purple: #c084fc;
+  
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  cursor: none; /* We will use a custom cursor */
+@layer base {
+  body {
+    background-color: var(--color-deep-space);
+    color: white;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(109, 40, 217, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: rgba(109, 40, 217, 0.3);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
 }
 
-html, body {
-  background-color: #0b0b0b;
-  color: white;
-  overflow-x: hidden;
+/* Custom Utilities using @utility directive (v4 style) */
+@utility glass {
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
 }
 
+@utility glass-purple {
+  backdrop-filter: blur(12px);
+  background-color: rgba(109, 40, 217, 0.05);
+  border: 1px solid rgba(109, 40, 217, 0.2);
+  border-radius: 1rem;
+}
+
+@utility text-glow {
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+}
+
+@utility purple-glow {
+  box-shadow: 0 0 20px rgba(109, 40, 217, 0.3);
+}
+
+@utility btn-primary {
+  @apply px-6 py-2.5 bg-cosmic-purple hover:bg-cosmic-violet transition-all duration-300 rounded-full font-medium active:scale-95 text-white inline-flex items-center justify-center cursor-pointer;
+  box-shadow: 0 0 20px rgba(109, 40, 217, 0.2);
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0b0b0b;
+  background: #050510;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #00f2ff;
+  background: rgba(109, 40, 217, 0.3);
   border-radius: 10px;
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(109, 40, 217, 0.5);
 }
 
-.neon-shadow {
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+/* Star/Particle Background Elements */
+.star-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
 }
 
-.neon-text {
-  text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: twinkle var(--duration, 3s) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.2); }
 }
