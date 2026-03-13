@@ -70,14 +70,19 @@ const Intro: React.FC<IntroProps> = ({ onIntroEnd, videoSrc }) => {
 
       {stage === "video" && (
         <div className="absolute inset-0 bg-black">
-          <video 
-            ref={videoRef}
-            src={videoSrc}
-            className="w-full h-full object-cover"
-            onEnded={onIntroEnd}
-            autoPlay
-            playsInline
-          />
+      <video 
+        ref={videoRef}
+        src={videoSrc}
+        className="w-full h-full object-cover"
+        onEnded={onIntroEnd}
+        autoPlay
+        playsInline
+        preload="auto"
+        onError={(e) => {
+          console.error("Video error details:", e);
+          onIntroEnd();
+        }}
+      />
           {/* Skip Option */}
           <button 
             onClick={onIntroEnd}
